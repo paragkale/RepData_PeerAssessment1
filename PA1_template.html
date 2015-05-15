@@ -127,9 +127,9 @@ legend(&quot;topright&quot;, legend=&quot;interval with max avg steps&quot;,
       intvstat[which.max(intvstat$avg),]$interval))</code></pre>
 <pre><code>## [1] &quot;Interval with maximum number of average steps = 835&quot;</code></pre>
 </div>
-<div id="inputing-missing-values" class="section level2">
-<h2>Inputing missing values</h2>
-<p>Make a copy of the original data. For each row with missing values, replace the steps value with the mean value for the steps in the corresponding interval.</p>
+<div id="imputing-missing-values" class="section level2">
+<h2>Imputing missing values</h2>
+<p>Make a copy of the original data. For each row with missing values, replace the step value with the mean value for the steps in the corresponding interval (the mean for that 5-minute interval across days.)</p>
 <pre class="r"><code>print(paste(&quot;Number of rows with missing values=&quot;, sum(!complete.cases(data))))</code></pre>
 <pre><code>## [1] &quot;Number of rows with missing values= 2304&quot;</code></pre>
 <pre class="r"><code>data2 &lt;- data

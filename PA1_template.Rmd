@@ -64,8 +64,10 @@ print(paste("Interval with maximum number of average steps =",
 ```
 
 
-## Inputing missing values
-Make a copy of the original data. For each row with missing values, replace the steps value with the mean value for the steps in the corresponding interval.
+## Imputing missing values
+
+Make a copy of the original data. For each row with missing values, replace the step value with the mean value for the steps in the corresponding interval (the mean for that 5-minute interval across days.)
+
 ```{r, echo=TRUE}
 
 print(paste("Number of rows with missing values=", sum(!complete.cases(data))))
