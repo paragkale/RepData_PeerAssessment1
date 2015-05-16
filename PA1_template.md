@@ -72,7 +72,7 @@ paste("Median of sum of steps per day = ",median(daystat$sum, na.rm=TRUE))
 
 
 ## What is the average daily activity pattern?
-Compute average number of steps taken for each interval across all days. Later print the interval that has the highest average
+Compute average number of steps taken for each interval across all days. Later print the interval that has the highest average.
 
 ```r
 intvstat <- data %>% group_by(interval) %>% 
@@ -103,7 +103,7 @@ print(paste("Interval with maximum number of average steps =",
 
 ## Imputing missing values
 
-Make a copy of the original data. For each row with missing values, replace the step value with the mean value for the steps in the corresponding interval (the mean for that 5-minute interval across days.)
+Make a copy of the original data. For each row with missing values, replace the step value with the mean value for the steps in the corresponding interval (the mean for that 5-minute interval across days.) For each missing value, we locate the corresponding interval and for that interval we find the average number of steps using the intvstat dataset computed earlier.
 
 
 ```r
@@ -135,14 +135,14 @@ At this point we have a dataset(data2) which has no missing values
 
 ```r
 daystat <- data2 %>% group_by(date) %>% 
-    summarize(sum = sum(steps, na.rm=TRUE))
+    summarize(sum = sum(steps))
 
 br <- seq(0,22000, length.out=101)
 hist(daystat$sum, breaks=br,
      main="Histogram of total steps per day (after filling values)", 
      xlab="Steps", ylab="Frequency")
-abline(v=mean(daystat$sum, na.rm=TRUE), col="blue", lty=1, lwd=1)
-abline(v=median(daystat$sum, na.rm=TRUE), col="red", lty=1, lwd=1)
+abline(v=mean(daystat$sum), col="blue", lty=1, lwd=1)
+abline(v=median(daystat$sum), col="red", lty=1, lwd=1)
 legend("topright", legend=c("mean", "median"),
        col=c("blue", "red"),lty=c(1,1), lwd=c(1,1))
 ```
@@ -151,7 +151,7 @@ legend("topright", legend=c("mean", "median"),
 
 ```r
 paste("Mean of sum of steps per day = ",
-      round(mean(daystat$sum, na.rm=TRUE)))
+      round(mean(daystat$sum)))
 ```
 
 ```
@@ -160,7 +160,7 @@ paste("Mean of sum of steps per day = ",
 
 ```r
 paste("Median of sum of steps per day = ",
-      round(median(daystat$sum, na.rm=TRUE)))
+      round(median(daystat$sum)))
 ```
 
 ```
@@ -196,3 +196,8 @@ qplot(interval,
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
+###Note: The figures are in the "PA1_template_files/figure-html" directory
+
+  
+  
