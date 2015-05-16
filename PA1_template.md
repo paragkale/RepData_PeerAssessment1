@@ -1,14 +1,10 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data  
 Please ensure that you set the working directory to the directory of the zip data file. The archive will be unzipped and read.
-```{r, echo=TRUE}
+
+```r
 filename <- "activity.zip"
 if (!file.exists(filename)) {
     print("Working directory is not set correctly")
@@ -24,8 +20,25 @@ data <- read.csv(filename, header=TRUE, sep=",")
 
 Calculate the sum of number of steps for each day. Then compute the mean and median of these values. Notice that we ignore missing values.
 
-```{r, echo=TRUE}
+
+```r
 library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+## 
+## The following object is masked from 'package:stats':
+## 
+##     filter
+## 
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
 daystat <- data %>% group_by(date) %>% 
                 summarize(sum = sum(steps, na.rm=TRUE))
 
@@ -37,15 +50,31 @@ abline(v=mean(daystat$sum, na.rm=TRUE), col="blue", lty=1, lwd=1)
 abline(v=median(daystat$sum, na.rm=TRUE), col="red", lty=1, lwd=1)
 legend("topright", legend=c("mean", "median"),
        col=c("blue", "red"),lty=c(1,1), lwd=c(1,1))
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
+
+```r
 paste("Mean of sum of steps per day = ",round(mean(daystat$sum, na.rm=TRUE)))
+```
+
+```
+## [1] "Mean of sum of steps per day =  9354"
+```
+
+```r
 paste("Median of sum of steps per day = ",median(daystat$sum, na.rm=TRUE))
+```
+
+```
+## [1] "Median of sum of steps per day =  10395"
 ```
 
 
 ## What is the average daily activity pattern?
 Compute average number of steps taken for each interval across all days. Later print the interval that has the highest average.
-```{r, echo=TRUE}
+
+```r
 intvstat <- data %>% group_by(interval) %>% 
     summarize(avg=mean(steps,na.rm=TRUE))
 
@@ -58,9 +87,17 @@ plot(intvstat$interval,
 abline(v=intvstat[which.max(intvstat$avg),]$interval, col="blue")
 legend("topright", legend="interval with max avg steps",
        col="blue",lty=1, lwd=1)
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
+
+```r
 print(paste("Interval with maximum number of average steps =", 
       intvstat[which.max(intvstat$avg),]$interval))
+```
+
+```
+## [1] "Interval with maximum number of average steps = 835"
 ```
 
 
@@ -68,10 +105,16 @@ print(paste("Interval with maximum number of average steps =",
 
 Make a copy of the original data. For each row with missing values, replace the step value with the mean value for the steps in the corresponding interval (the mean for that 5-minute interval across days.) For each missing value, we locate the corresponding interval and for that interval we find the average number of steps using the intvstat dataset computed earlier.
 
-```{r, echo=TRUE}
 
+```r
 print(paste("Number of rows with missing values=", sum(!complete.cases(data))))
+```
 
+```
+## [1] "Number of rows with missing values= 2304"
+```
+
+```r
 data2 <- data
 
 missing <- which(is.na(data2$steps))
@@ -83,9 +126,14 @@ data2$steps[missing] <- sapply(missing, function(ii) {
 print(paste("Number of rows with missing values after filling NAs=", 
             sum(!complete.cases(data2)) ))
 ```
+
+```
+## [1] "Number of rows with missing values after filling NAs= 0"
+```
 At this point we have a dataset(data2) which has no missing values
 
-```{r, echo=TRUE}
+
+```r
 daystat <- data2 %>% group_by(date) %>% 
     summarize(sum = sum(steps))
 
@@ -97,11 +145,26 @@ abline(v=mean(daystat$sum), col="blue", lty=1, lwd=1)
 abline(v=median(daystat$sum), col="red", lty=1, lwd=1)
 legend("topright", legend=c("mean", "median"),
        col=c("blue", "red"),lty=c(1,1), lwd=c(1,1))
+```
 
+![](PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
+```r
 paste("Mean of sum of steps per day = ",
       round(mean(daystat$sum)))
+```
+
+```
+## [1] "Mean of sum of steps per day =  10766"
+```
+
+```r
 paste("Median of sum of steps per day = ",
       round(median(daystat$sum)))
+```
+
+```
+## [1] "Median of sum of steps per day =  10766"
 ```
 
 Clearly there is a difference between the previously computed values and the ones after filling the missing values.
@@ -110,7 +173,8 @@ Clearly there is a difference between the previously computed values and the one
 
 Create a new column to hold the weekday. And then summarize the steps by interval and weekday
 
-```{r, echo=TRUE}
+
+```r
 wdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 
 data2 <- mutate(data2, wday = factor(weekdays(as.Date(date)) %in% wdays, 
@@ -129,12 +193,11 @@ qplot(interval,
       geom="line") +
     labs(x = "Intervals") +
     labs(y = "Average number of Steps") 
-      
 ```
 
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
+
 ###Note: The figures are in the "PA1_template_files/figure-html" directory
-
-
 
   
   
